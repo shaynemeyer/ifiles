@@ -1,0 +1,118 @@
+# ---------- Go ----------
+
+# Compiled binaries. The bare /ifiles entry is anchored so it can't shadow a
+# future package directory of the same name.
+/ifiles
+/ifiles-*
+/dist/
+/bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test and coverage output
+*.test
+*.out
+coverage.txt
+coverage.html
+profile.cov
+
+# Profiling artifacts from `go test -cpuprofile` etc.
+*.prof
+cpu.pprof
+mem.pprof
+block.pprof
+mutex.pprof
+trace.out
+
+# Fuzzing corpus caches (seed corpora under testdata/ stay tracked)
+**/testdata/fuzz/
+
+# Go workspace files — machine-specific, should not be shared
+go.work
+go.work.sum
+
+# Vendored deps: not used here. Delete this line if you ever run `go mod vendor`.
+/vendor/
+
+
+# ---------- macOS ----------
+
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.DocumentRevisions-V100
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+Icon?
+
+
+# ---------- Editors / IDEs ----------
+
+.idea/
+*.iml
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+*.swp
+*.swo
+*~
+.zed/
+
+
+# ---------- Node / React (web/, from M7) ----------
+
+node_modules/
+web/dist/
+web/.vite/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+
+# ---------- ifiles-specific ----------
+
+# Local config and scan database. These contain real filesystem paths from the
+# machine that produced them — never commit them.
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+ifiles.db
+/config.toml
+/rules.d/
+
+# Real scan output. Same reason: full paths, and potentially client or employer
+# names. Fixture output belongs under testdata/ and is committed deliberately.
+/scan-*.json
+/report-*.json
+/report-*.md
+/*.scan.json
+
+# Rendered diagram artifacts — Mermaid sources in docs/ are the source of truth,
+# the SVG/PNG output is regenerable.
+docs/**/*.svg
+docs/**/*.png
+
+# Secrets. Credentials belong in the macOS Keychain, not on disk; this is a
+# backstop in case a stray env file shows up anyway.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+
+# ---------- Local scratch ----------
+
+/tmp/
+/scratch/
+*.local
