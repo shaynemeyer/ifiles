@@ -1,7 +1,8 @@
 # Explain Action
 
 1. Read `context/current-feature.md` to understand what was implemented.
-2. Run `git diff main --name-only` to get the list of files changed.
+2. Run `git diff <base-branch> --name-only` to get the list of files changed, using the base
+   branch documented in `context/ai-interaction.md`.
 3. For each file created or modified:
    - Show the file path
    - Give a 1-2 sentence explanation of what it does / what changed

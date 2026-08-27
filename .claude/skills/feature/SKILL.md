@@ -22,18 +22,6 @@ Manages the full lifecycle of a feature from spec to merge. State is tracked in
   `context/feature-history.md` (the archive, oldest to newest) before writing the new one, so this
   section never accumulates
 
-## Work Log
-
-`docs/work-log.md` is the durable record of completed work: one `##` section per feature, oldest to
-newest, written when the work is finished and summarized. `complete` commits it (step 7) — but write
-the entry as soon as the work is done and reported, rather than waiting, since the reasoning behind
-a decision is cheapest to record while it is still in view.
-
-It is deliberately not the same thing as the two files above. `## History` in
-`context/current-feature.md` is one paragraph for orientation and holds exactly one entry;
-`docs/work-log.md` is long-form and keeps everything. Neither is loaded automatically, so an entry
-here is written for someone arriving cold.
-
 ## Spec Files
 
 Feature specs live in `context/features/{nn-name}.md` (fixes in `context/fixes/`), numbered in
@@ -45,23 +33,11 @@ dependency order. Each carries a status line directly under its H1:
 **Status:** Not Started
 ```
 
-Three values are used: `Not Started`, `In Progress` which `start` writes, and
-`Complete — merged YYYY-MM-DD (<sha>)` which `complete` writes.
+Only two values are used: `Not Started`, and `Complete — merged YYYY-MM-DD (<sha>)` which
+`complete` writes. There is deliberately no "In Progress" here — only one feature is ever active,
+and `context/current-feature.md` tracks that, so a second mutable copy would only drift.
 
-**`In Progress` is a single-holder marker, and that is what keeps it honest.** An earlier version of
-this file left it out, on the grounds that `context/current-feature.md` already tracks the active
-feature and a second mutable copy would only drift. The drift is real — nothing about finishing a
-*different* feature clears a marker left on an abandoned one — but the premise cuts the other way:
-because only one feature is ever active, any spec marked `In Progress` that is not the loaded one is
-by definition stale, so it can be found and reset rather than merely worried about. `load` does that,
-and `status` reports one it finds. What the marker buys is that a spec read on its own no longer
-contradicts reality, which is how a review of 15 came to report a finished feature as `Not Started`.
-
-Outstanding work is therefore `grep -L '^\*\*Status:\*\*.*Complete' context/features/*.md`, unchanged
-in meaning — `In Progress` counts as outstanding, which is correct. **The pattern is anchored to the
-status line deliberately**: unanchored it is a regex over the whole file, so a spec that mentions the
-words in prose reads as complete, which is exactly how `27-productionization.md` stayed invisible to
-this command from the day it was written. Completed specs
+Outstanding work is therefore `grep -L "Status:.*Complete" context/features/*.md`. Completed specs
 stay in place rather than moving to an archive folder: they are still referenced constantly
 (every CRUD feature builds on `02-domain-schema`, and 15 features extend `04-seed-harness`), and
 each spec's `Depends on:` line names siblings by filename.
@@ -78,10 +54,10 @@ The user names one action. Determine which from their request.
 | `review`   | Check goals met, code quality                             |
 | `test`     | Write or verify tests for the feature's new logic          |
 | `explain`  | Document what changed and why                             |
-| `complete` | Commit, push, merge, reset, log in `docs/work-log.md`     |
+| `complete` | Commit, push, merge, reset                                |
 
 Before executing, read the matching instruction file for the full steps:
-`.kiro/skills/feature/actions/{action}.md`
+`.claude/skills/feature/actions/{action}.md`
 
 If the user did not specify an action, list the options above and ask which they want.
 
